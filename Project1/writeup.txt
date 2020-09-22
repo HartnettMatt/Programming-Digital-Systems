@@ -1,0 +1,27 @@
+1.
+The primary purpose of this function is that it takes the values stored in the X array and transfers them into the Y array, at which point it reaches the stop block, which is an infinite loop. It does this by first transfering the address of X and Y into r2 and r3 respectively. Then, r4 stores the size of the two arrays, which in this case is 6. It then enters the LABEL block, where register r6 stores the first word of r2. The first word of r3 gets set to the value of r6. From there, the function steps r2 and r3 forward by one byte, which essentially moves through the array one by one. r4, which stores the size of the arrays is then decreased by one, and is used as the iterator to determine when to stop moving through r2 and r3. 
+
+C Code:
+
+int N[1] = {6};
+int X[6] = {5, 3, -6, 19, 8, 12};
+int Y[6] = {0, 0, 0, 0, 0, 0}
+int *r2 = X;
+int *r3 = Y;
+int *r4 = N;
+r4 = &r4[0];
+r5 = 0 + 0;
+
+do {
+	int * r6 = %r2[0];
+	*r3 = *r6;
+	r2++;
+	r3++;
+	r4* -= 1;
+} while(*r4 > 0);
+
+while(1){}
+---
+2. stw r4, 65508(r19)
+---
+3. 0x2D9D203A
