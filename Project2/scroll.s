@@ -1,4 +1,5 @@
 .data
+# Array of "HELLO BUFFS---    " to be displayed
 str:
      .word 0x76
      .word 0x79
@@ -19,14 +20,10 @@ str:
      .word 0x00
      .word 0x00
 .text
-.equ	LEDs,		0xFF200000
-.equ	HEXa,	0xFF200020
-.equ   HEXb, 0xFF200030
+.equ	HEX,	0xFF200020
 .global _start
 _start:
-  movia	r2, LEDs			# Address of LEDs
-  movia	r3, HEXa	# Address of HEX[3:0]
-  movia r4, HEXb  # Address of HEX[5:4]
+  movia	r3, HEX	# Address of HEX[3:0]
 reset:
   movia r7, 18    # Number of characters
   movia r9, 0
@@ -34,10 +31,12 @@ reset:
   movia r21, 0
   movia r20, 0x150000
 
+# First busy-wait loop, which adds the delay for the "HELLO BUFFS---    " string
 busy_loop0:
   addi r21, r21, 1
   blt r21, r20, busy_loop0
   movia r21, 0
+# Scroll through and display the array
 hello:
 # Get the next word in the array
   movia r5, str
@@ -54,20 +53,26 @@ hello:
   addi r9, r9, 1
   blt	r9, r7, busy_loop0
 
+# A few registers to control which pattern to display
 movia r6, 1 # r6==0 => display pattern B, r6==1 => display pattern A
 movia r7, 3 # Number of pattern A displays minus 1
 movia r8, 0 # Counter of pattern A displays
+# Second wait-busy, in charge of the pattern A - pattern B switching
 busy_loop1:
   addi r21, r21, 1
   blt r21, r20, busy_loop1
   movia r21, 0
   beq r6, r0, pB
+
+# Display pattern A:
 pA:
   movia r5, 0x49494949
   movia r6, 0
   stwio r5, 0(r3)
   addi r8, r8, 1
   br busy_loop1
+
+# Display pattern B:
 pB:
   movia r5, 0x36363636
   movia r6, 1
@@ -75,6 +80,7 @@ pB:
   beq r7, r8, blank
   br busy_loop1
 
+# Same idea as before, but instead of pattern A and B, just all on or all off
 blank:
   movia r6, 1 # r6==0 => display all off, r6==1 => display all on
   movia r7, 3 # Number of pattern A displays minus 1
