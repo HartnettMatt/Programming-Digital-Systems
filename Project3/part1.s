@@ -26,25 +26,31 @@ op_three:
 
 .global fibonacci
 fibonacci:
-  subi      sp, sp, 8
-  stw       ra, 4(sp)
+  subi      sp, sp, 12
+  stw       ra, 8(sp)
 
   mov       r2, r0
-  beq       r4, r0, end
+  beq       r4, r0, return
 
   addi      r2, r2, 1
-  beq       r4, r0, end
+  beq       r4, r2, return
 
   stw       r4, 0(sp)
   subi      r4, r4, 1
   call      fibonacci
+  mov       r8, r2
   ldw       r4, 0(sp)
 
-  add       r2, r4, r2
+  subi      r4, r4, 2
+  stw       r8, 4(sp)
+  call      fibonacci
+  ldw       r8, 4(sp)
 
-end:
-  ldw     ra, 4(sp)
-  addi    sp, sp, 8
+  add       r2, r8, r2
+
+return:
+  ldw     ra, 8(sp)
+  addi    sp, sp, 12
   ret
 
 .end
