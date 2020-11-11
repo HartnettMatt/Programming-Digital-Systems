@@ -56,11 +56,11 @@ _start:
 
 	# 2. Enable peripheral to generate interrupts
 	movi			r6, 0b10			# set IRQ #1 (pushbuttons)
-	wrctrl		ienable, r6 	# Need a special command to write to control registers, this enables button interrupts
+	wrctl		ienable, r6 	# Need a special command to write to control registers, this enables button interrupts
 
 	# 3. Enable global interrupts - Processor Interrupt Enable (PIE)
 	movi			r6, 0b1 			# PIE is the first bit of the status register
-	wrctrl		status, r6 		# set PIE to 1
+	wrctl		status, r6 		# set PIE to 1
 
 IDLE:
 	br	 IDLE
