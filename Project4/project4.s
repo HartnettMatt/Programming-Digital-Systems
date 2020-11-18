@@ -51,7 +51,7 @@ COUNT: .word 0
     # stop and reset time
     movia   r20, 0xff202000
     ldwio   r5, 4(r20)
-    ori     r5, r5, 0b1000   #bitmask to the stop bit
+    ori     r5, r5, 0b1000    #bitmask to the stop bit
     stwio   r5, 4(r20)
     ldwio   r5, 0(r20)
     ori     r5, r5, 0b1       #bitmask to TO register to reset timer to 0
@@ -133,7 +133,7 @@ _start:
 
     # 1.2 Configure timer0
     movia   r16, 0xff202000 # stores location of the HEX display into r16
-    movia   r7, 50000000   # 100M * 100MHz = 1 Hz
+    movia   r7, 50000000    # 100M * 100MHz = 1 Hz
     sthio   r7, 8(r16)      # low counter start
     srli    r7, r7, 16      # get high 16 bits
     sthio   r7, 12(r16)     # high counter start
